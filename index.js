@@ -35,7 +35,7 @@ exports.addMessage = functions.https.onRequest(async (req, res) => {
   const original = req.query.text;
   // [START adminSdkPush]
   // Push the new message into the Realtime Database using the Firebase Admin SDK.
-  const snapshot = await admin.database().ref('/messages').push({original: original});
+  const snapshot = await admin.database().ref('/notes').push({original: original});
   // Redirect with 303 SEE OTHER to the URL of the pushed object in the Firebase console.
   res.redirect(303, snapshot.ref.toString());
   // [END adminSdkPush]
@@ -45,7 +45,7 @@ exports.addMessage = functions.https.onRequest(async (req, res) => {
 // [START makeUppercase]
 // Listens for new messages added to /messages/:pushId/original and creates an
 // uppercase version of the message to /messages/:pushId/uppercase
-exports.makeUppercase = functions.database.ref('/messages/{pushId}/original')
+exports.makeUppercase = functions.database.ref('/notes/{pushId}/original')
     .onCreate((snapshot, context) => {
       // Grab the current value of what was written to the Realtime Database.
       const original = snapshot.val();
