@@ -57,4 +57,27 @@ exports.makeUppercase = functions.database.ref('/messages/{pushId}/original')
       return snapshot.ref.parent.child('uppercase').set(uppercase);
     });
 // [END makeUppercase]
+
+
+// [START deliveryRequest]
+
+exports.deliveryRequest = functions.firestore
+      .collection("delivery/{docId}")
+      .onWrite((snap, context) => {
+
+        const data = snap.data();
+        
+        const doc_id = data.doc_id;
+        const created_at = data.created_at;
+        const puckup_name = data.pickup_name;
+        const dropoff_name = data.drop_off_name;
+        const pickup_location  = data.pickup_location;
+        const dropoff_location = data.drop_off_location;
+
+
+        //TODO: GeoFire
+        //send data to all in keyEntered
+      });
+
+// [END deliveryRequest]
 // [END all]
