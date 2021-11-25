@@ -23,11 +23,6 @@ const firestore = admin.firestore();
 //Create Geofirestore Ref
 const Geofirestore = geofirestore.initializeApp(firestore);
 
-//The Geolocation ref for available drivers to query against
-const geocollection = Geofirestore.collection('delivery_drivers_online');
-
-//Create geocollection document
-
 
 // [START deliveryRequest]
 exports.deliveryRequest = functions.firestore
@@ -43,13 +38,32 @@ exports.deliveryRequest = functions.firestore
         const pickup_location  = data.pickup_location;
         const dropoff_location = data.drop_off_location;
 
+        //The Geolocation ref for available drivers to query against
+        const geocollection = Geofirestore.collection('delivery_drivers_online');
 
-        
+      //Create geocollection document
+      geocollection.add({
+        name: 'Geofirestore',
+        score: 100,
+        // The coordinates field must be a GeoPoint!
+        coordinates: new firebase.firestore.GeoPoint(pickup_location.latitude, pickup_location.longitude)
+      })
 
+
+      // Create a GeoQuery based on a location
+      const query = geocollection.near({
+         center: new firebase.firestore.GeoPoint(pickup_location.latitude, pickup_location.longitude), 
+         radius: 1000 * 2});
+
+      // Get query (as Promise)
+      query.get().then((value) => {
+        // All GeoDocument returned by GeoQuery, like the GeoDocument added above
+
+        //TODO: ForEach(value.docs) { get users and send them notification}
+      });
 
 
         //ALT: user Geofirestore: https://github.com/MichaelSolati/geofirestore-js
-
 
         //Store a Geo query readab;le by client, like in : https://firebase.google.com/docs/firestore/solutions/geoqueries#java
       });
