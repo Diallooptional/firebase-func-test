@@ -27,7 +27,7 @@ const Geofirestore = geofirestore.initializeApp(firestore);
 // [START deliveryRequest]
 exports.deliveryRequest = functions.firestore
       .collection("delivery/{docId}")
-      .onWrite((snap, context) => {
+      .onWrite(async (snap, context) => {
 
         const data = snap.data();
         
@@ -59,7 +59,7 @@ exports.deliveryRequest = functions.firestore
       query.get().then((value) => {
         // All GeoDocument returned by GeoQuery, like the GeoDocument added above
 
-        //TODO: ForEach(value.docs) { get users and send them notification}
+        //TODO: ForEach(value.docs) { get driver and send them notification}
       });
 
 
