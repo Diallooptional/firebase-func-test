@@ -39,10 +39,10 @@ exports.deliveryRequest = functions.firestore
         const dropoff_location = data.drop_off_location;
 
         //The Geolocation ref for available drivers to query against
-        const geocollection = Geofirestore.collection('delivery_drivers_online');
+        const geocollectionRef = Geofirestore.collection('delivery_drivers_online');
 
       //Create geocollection document
-      geocollection.add({
+      geocollectionRef.add({
         name: 'Geofirestore',
         score: 100,
         // The coordinates field must be a GeoPoint!
@@ -51,7 +51,7 @@ exports.deliveryRequest = functions.firestore
 
 
       // Create a GeoQuery based on a location
-      const query = geocollection.near({
+      const query = geocollectionRef.near({
          center: new firebase.firestore.GeoPoint(pickup_location.latitude, pickup_location.longitude), 
          radius: 1000 * 2});
 
@@ -60,6 +60,10 @@ exports.deliveryRequest = functions.firestore
         // All GeoDocument returned by GeoQuery, like the GeoDocument added above
 
         //TODO: ForEach(value.docs) { get driver and send them notification}
+            forEach(doc : doc.getData()) {
+                  
+                  //send data to each one of docs in: users>driverId
+            }
       });
 
 
