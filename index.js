@@ -56,16 +56,26 @@ exports.deliveryRequest = functions.firestore
          radius: 1000 * 2});
 
       // Get query (as Promise)
-      query.get().then((value) => {
-        // All GeoDocument returned by GeoQuery, like the GeoDocument added above
+      const snapshot = await query.get();
+      // All GeoDocument returned by GeoQuery, like the GeoDocument added above
+      if (snapshot.empty) {
+        functions.logger.log('no drivers onine');
+        //return res to client      
+        return;
+      }
 
-        //TODO: ForEach(value.docs) { get driver and send them notification}
-            forEach(doc : doc.getData()) {
-                  
-                  //send data to each one of docs in: users>driverId
-            }
+       //TODO: ForEach(value.docs) { get driver and send them notification}
+
+      snapshot.forEach(doc => {
+        let driver_id = doc.id;
+        
+        //send data to each one of docs in: users>driverId
+        const res = await firestore.collection('users').doc(driver_id).update({
+          delivery_requests: FieldValue.arrayUnion(doc_id)
+        }); 
+
       });
-
+                  
 
         //ALT: user Geofirestore: https://github.com/MichaelSolati/geofirestore-js
 
