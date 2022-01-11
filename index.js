@@ -64,8 +64,9 @@ exports.deliveryRequest = functions.firestore
         return;
       }
 
-       //TODO: ForEach(value.docs) { get driver and send them notification}
-
+       //ForEach(value.docs) { get driver and request to node available drivers aer listenining to}
+       //TODO: Delete node in 20 sec
+       
       snapshot.forEach(doc => {
         let driver_id = doc.id;
         
